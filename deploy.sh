@@ -74,7 +74,7 @@ nginx_define()
         sudo ln -sf "$NGINX_DIR/$f" "$NGINX_ETC_DIR/conf.d"
     done
 
-#    openssl_dhparam_define
+    openssl_dhparam_define
 }
 
 letsencrypt_define()
