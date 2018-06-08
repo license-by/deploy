@@ -15,7 +15,7 @@ DEPLOY_URL="https://codeload.github.com/license-by/deploy/tar.gz/$DEPLOY_BRANCH"
 NGINX_ETC_DIR='/etc/nginx'
 NGINX_DIR="$LICENSE_DIR/nginx"
 
-LETSENCRYPT_DIR="$PROIT_DIR/letsencrypt"
+LETSENCRYPT_DIR="$LICENSE_DIR/letsencrypt"
 LETSENCRYPT_BRANCH='master'
 LETSENCRYPT_URL="https://codeload.github.com/certbot/certbot/tar.gz/$LETSENCRYPT_BRANCH"
 
