@@ -31,7 +31,7 @@ structure_define()
 
     mkdir -p "$LICENSE_TMP_DIR"
     mkdir -p "$SITE_DIR"
-    mkdir -p "$NGINX_LOGS_DIR"
+    mkdir -p "$NGINX_DIR"
     mkdir -p "$LETSENCRYPT_DIR"
 }
 
@@ -77,10 +77,10 @@ nginx_define()
 
         sudo ln -sf "$NGINX_CONFIGS_DIR/$f" "$NGINX_ETC_DIR/conf.d"
 
-        mkdir "$NGINX_LOGS_DIR/$f"
+        mkdir -p "$NGINX_LOGS_DIR/$(echo $f | cut -f 1 -d '.')"
     done
 
-#    openssl_dhparam_define
+    openssl_dhparam_define
 }
 
 letsencrypt_define()
