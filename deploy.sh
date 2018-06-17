@@ -14,6 +14,8 @@ DEPLOY_URL="https://codeload.github.com/license-by/deploy/tar.gz/$DEPLOY_BRANCH"
 #NGINX_APT_FILE='/etc/apt/sources.list.d/nginx.list'
 NGINX_ETC_DIR='/etc/nginx'
 NGINX_DIR="$LICENSE_DIR/nginx"
+NGINX_LOGS_DIR="$NGINX_DIR/logs"
+NGINX_CONFIGS_DIR="$NGINX_DIR/configs"
 
 LETSENCRYPT_DIR="$LICENSE_DIR/letsencrypt"
 LETSENCRYPT_BRANCH='master'
@@ -29,7 +31,7 @@ structure_define()
 
     mkdir -p "$LICENSE_TMP_DIR"
     mkdir -p "$SITE_DIR"
-    mkdir -p "$NGINX_DIR"
+    mkdir -p "$NGINX_LOGS_DIR"
     mkdir -p "$LETSENCRYPT_DIR"
 }
 
@@ -39,6 +41,7 @@ structure_remove()
     rm -rf "$SITE_DIR"
     rm -rf "$NGINX_DIR"
     rm -rf "$LETSENCRYPT_DIR"
+    rm -rf "$LICENSE_LOGS_DIR"
 }
 
 deploy_download()
@@ -69,12 +72,15 @@ nginx_define()
 #    sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys ABF5BD827BD9BF62 && \
 #    sudo apt-get update -y && sudo apt-get install -y nginx && sudo apt-get autoclean -y
 
-    for f in $(ls "$NGINX_DIR/"); do
+    for f in $(ls "$NGINX_CONFIGS_DIR/"); do
         echo "$f"
-        sudo ln -sf "$NGINX_DIR/$f" "$NGINX_ETC_DIR/conf.d"
+
+        sudo ln -sf "$NGINX_CONFIGS_DIR/$f" "$NGINX_ETC_DIR/conf.d"
+
+        mkdir "$NGINX_LOGS_DIR/$f"
     done
 
-    openssl_dhparam_define
+#    openssl_dhparam_define
 }
 
 letsencrypt_define()
