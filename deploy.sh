@@ -21,29 +21,37 @@ LETSENCRYPT_DIR="$LICENSE_DIR/letsencrypt"
 LETSENCRYPT_BRANCH='master'
 LETSENCRYPT_URL="https://codeload.github.com/certbot/certbot/tar.gz/$LETSENCRYPT_BRANCH"
 
-LICENSE_DHPARAM_KEY_FILE="$LETSENCRYPT_DIR/dhparam.pem"
-LICENSE_SSL_BIT_KEY_SIZE=4096
+SSL_DIR="$LICENSE_DIR/ssl"
+SSL_TICKET_KEY_FILE="$SSL_DIR/ticket.key"
+SSL_TICKET_KEY_BIT_SIZE=80
+SSL_DHPARAM_FILE="$SSL_DIR/dhparam.pem"
+SSL_DHPARAM_BIT_SIZE=4096
 
 
+# Structure create
 structure_define()
 {
     echo "Structure building..."
 
     mkdir -p "$LICENSE_TMP_DIR"
     mkdir -p "$SITE_DIR"
+    mkdir -p "$SSL_DIR"
     mkdir -p "$NGINX_DIR"
     mkdir -p "$LETSENCRYPT_DIR"
 }
 
+# Structure remove
 structure_remove()
 {
     rm -rf "$LICENSE_TMP_DIR"
     rm -rf "$SITE_DIR"
+    rm -rf "$SSL_DIR"
     rm -rf "$NGINX_DIR"
     rm -rf "$LETSENCRYPT_DIR"
     rm -rf "$LICENSE_LOGS_DIR"
 }
 
+# Deploy download
 deploy_download()
 {
     echo "Deploy source downloading..."
@@ -57,12 +65,26 @@ deploy_download()
     fi
 }
 
-# DHParam
-openssl_dhparam_define()
+# SSL Ticket key generate
+openssl_ticket_key_define()
 {
-    openssl dhparam -out "$LICENSE_DHPARAM_KEY_FILE" "$LICENSE_SSL_BIT_KEY_SIZE"
+    openssl rand "$SSL_TICKET_KEY_BIT_SIZE" > "$SSL_TICKET_KEY_FILE"
 }
 
+# DHParam generate
+openssl_dhparam_define()
+{
+    openssl dhparam -out "$SSL_TICKET_KEY_FILE" "$SSL_DHPARAM_BIT_SIZE"
+}
+
+# SSL
+ssl_define()
+{
+    openssl_ticket_key_define
+    openssl_dhparam_define
+}
+
+# NGinx
 nginx_define()
 {
 #    sudo rm -f "$NGINX_APT_FILE" && \
@@ -79,10 +101,9 @@ nginx_define()
 
         mkdir -p "$NGINX_LOGS_DIR/$(echo $f | cut -f 1 -d '.')"
     done
-
-    openssl_dhparam_define
 }
 
+# Let's Encrypt
 letsencrypt_define()
 {
     echo "Let's Encrypt source downloading..."
@@ -98,6 +119,7 @@ letsencrypt_define()
     mv "$LETSENCRYPT_DIR/certbot-$LETSENCRYPT_BRANCH" "$LETSENCRYPT_DIR/certbot"
 }
 
+# Deploy
 deploy_define()
 {
     local deploy_dir="$LICENSE_TMP_DIR/deploy-$DEPLOY_BRANCH/"
@@ -106,10 +128,12 @@ deploy_define()
     mv "$deploy_dir/nginx" "$LICENSE_DIR/"
     rm -rf "$deploy_dir/"
 
+    ssl_define
     nginx_define
     letsencrypt_define
 }
 
+# Site download
 site_download()
 {
     echo "Site source downloading..."
@@ -123,6 +147,7 @@ site_download()
     fi
 }
 
+# Site
 site_define()
 {
     local site_dir="$LICENSE_TMP_DIR/site-$SITE_BRANCH/"
@@ -134,6 +159,7 @@ site_define()
     rm -rf "$site_dir/"
 }
 
+# Main
 deploy()
 {
     structure_remove
@@ -149,4 +175,5 @@ deploy()
 }
 
 
+# Run
 deploy
