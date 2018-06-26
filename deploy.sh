@@ -33,21 +33,21 @@ structure_define()
 {
     echo "Structure building..."
 
-    mkdir -p "$LICENSE_TMP_DIR"
-    mkdir -p "$SITE_DIR"
-    mkdir -p "$SSL_DIR"
-    mkdir -p "$NGINX_DIR"
+    mkdir -p "$LICENSE_TMP_DIR" && \
+    mkdir -p "$SITE_DIR" && \
+    mkdir -p "$SSL_DIR" && \
+    mkdir -p "$NGINX_DIR" && \
     mkdir -p "$LETSENCRYPT_DIR"
 }
 
 # Structure remove
 structure_remove()
 {
-    rm -rf "$LICENSE_TMP_DIR"
-    rm -rf "$SITE_DIR"
-    rm -rf "$SSL_DIR"
-    rm -rf "$NGINX_DIR"
-    rm -rf "$LETSENCRYPT_DIR"
+    rm -rf "$LICENSE_TMP_DIR" && \
+    rm -rf "$SITE_DIR" && \
+    rm -rf "$SSL_DIR" && \
+    rm -rf "$NGINX_DIR" && \
+    rm -rf "$LETSENCRYPT_DIR" && \
     rm -rf "$LICENSE_LOGS_DIR"
 }
 
@@ -80,7 +80,7 @@ openssl_dhparam_define()
 # SSL
 ssl_define()
 {
-    openssl_ticket_key_define
+    openssl_ticket_key_define && \
     openssl_dhparam_define
 }
 
@@ -97,7 +97,7 @@ nginx_define()
     for f in $(ls "$NGINX_CONFIGS_DIR/"); do
         echo "$f"
 
-        sudo ln -sf "$NGINX_CONFIGS_DIR/$f" "$NGINX_ETC_DIR/conf.d"
+        sudo ln -sf "$NGINX_CONFIGS_DIR/$f" "$NGINX_ETC_DIR/conf.d" && \
 
         mkdir -p "$NGINX_LOGS_DIR/$(echo $f | cut -f 1 -d '.')"
     done
@@ -124,12 +124,12 @@ deploy_define()
 {
     local deploy_dir="$LICENSE_TMP_DIR/deploy-$DEPLOY_BRANCH/"
 
-    mv "$deploy_dir/letsencrypt" "$LICENSE_DIR/"
-    mv "$deploy_dir/nginx" "$LICENSE_DIR/"
-    rm -rf "$deploy_dir/"
+    mv "$deploy_dir/letsencrypt" "$LICENSE_DIR/" && \
+    mv "$deploy_dir/nginx" "$LICENSE_DIR/" && \
+    rm -rf "$deploy_dir/" && \
 
-    ssl_define
-    nginx_define
+    ssl_define && \
+    nginx_define && \
     letsencrypt_define
 }
 
@@ -162,14 +162,14 @@ site_define()
 # Main
 deploy()
 {
-    structure_remove
-    structure_define
+    structure_remove && \
+    structure_define && \
 
-    deploy_download
-    deploy_define
+    deploy_download && \
+    deploy_define && \
 
-    site_download
-    site_define
+    site_download && \
+    site_define && \
 
     rm -rf "$LICENSE_TMP_DIR"
 }
