@@ -58,7 +58,7 @@ deploy_download()
 
     cd "$LICENSE_TMP_DIR" && curl -SL "$DEPLOY_URL" | tar -xz
     if [ $? -ne 0 ]; then
-        echo "Some errors with deploy source downloading for '$DEPLOY_URL'"
+        echo "Some errors with deploy source downloading for '$DEPLOY_URL'" && \
         structure_remove
 
         exit 1
@@ -95,11 +95,13 @@ nginx_define()
 #    sudo apt-get update -y && sudo apt-get install -y nginx && sudo apt-get autoclean -y
 
     for f in $(ls "$NGINX_CONFIGS_DIR/"); do
-        echo "$f"
+        echo "$f" && \
 
         sudo ln -sf "$NGINX_CONFIGS_DIR/$f" "$NGINX_ETC_DIR/conf.d" && \
 
-        mkdir -p "$NGINX_LOGS_DIR/$(echo $f | cut -f 1 -d '.')"
+        if [ "$(basename "$f" .conf)" != "$f" ]; then
+            mkdir -p "$NGINX_LOGS_DIR/$(echo $f | cut -f 1 -d '.')"
+        fi
     done
 }
 
@@ -110,7 +112,7 @@ letsencrypt_define()
 
     cd "$LETSENCRYPT_DIR" && curl -SL "$LETSENCRYPT_URL" | tar -xz
     if [ $? -ne 0 ]; then
-        echo "Some errors with deploy source downloading for '$DEPLOY_URL'"
+        echo "Some errors with deploy source downloading for '$DEPLOY_URL'" && \
         structure_remove
 
         exit 1
