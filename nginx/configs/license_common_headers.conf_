@@ -8,4 +8,4 @@ add_header Referrer-Policy "no-referrer";
 add_header Access-Control-Allow-Methods "GET, HEAD, OPTIONS, CONNECT";
 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
 add_header Upgrade-Insecure-Requests "1";
-add_header Cache-Control "public, no-store, no-cache, must-revalidate, post-check=0, pre-check=0";
+add_header Cache-Control "public, no-cache, must-revalidate, post-check=0, pre-check=0";

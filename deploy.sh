@@ -100,7 +100,7 @@ nginx_define()
         sudo ln -sf "$NGINX_CONFIGS_DIR/$f" "$NGINX_ETC_DIR/conf.d" && \
 
         if [ "$(basename "$f" .conf)" != "$f" ]; then
-            mkdir -p "$NGINX_LOGS_DIR/$(echo $f | cut -f 1 -d '.')"
+            mkdir -p "$NGINX_LOGS_DIR/$(echo $f | cut -d '.' -f 2)"
         fi
     done
 }
