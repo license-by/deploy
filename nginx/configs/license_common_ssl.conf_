@@ -1,6 +1,7 @@
 ssl_certificate /etc/letsencrypt/live/license.by/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/license.by/privkey.pem;
 ssl_trusted_certificate /etc/letsencrypt/live/license.by/cert.pem;
+
 ssl_dhparam /home/license/ssl/dhparam.pem;
 
 ssl_protocols TLSv1.2 TLSv1.3;
