@@ -74,7 +74,7 @@ openssl_ticket_key_define()
 # DHParam generate
 openssl_dhparam_define()
 {
-    openssl dhparam -out "$SSL_TICKET_KEY_FILE" "$SSL_DHPARAM_BIT_SIZE"
+    openssl dhparam -out "$SSL_DHPARAM_FILE" "$SSL_DHPARAM_BIT_SIZE"
 }
 
 # SSL
