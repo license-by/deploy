@@ -12,6 +12,12 @@ location = /robots.txt {
     access_log off;
 }
 
+location ^~ /(images|styles|scripts|fonts)/ {
+    include conf.d/license_common_headers;
+
+    include conf.d/license_common_gzip;
+}
+
 resolver 8.8.8.8 8.8.4.4 valid=300s;
 resolver_timeout 10s;
 
