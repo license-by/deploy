@@ -1,8 +1,8 @@
 #!/bin/sh
 
-/home/license/letsencrypt/certbot/certbot-auto certonly \
+/usr/bin/certbot certonly \
     --standalone \
-    --email info@hackerspace.by \
+    --email info@lvee.org \
     --renew-by-default \
     --rsa-key-size 4096 \
     -d license.by \
