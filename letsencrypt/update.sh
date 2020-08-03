@@ -2,7 +2,7 @@
 
 /usr/bin/certbot certonly \
     --standalone \
-    --email info@lvee.org \
+    --email info@license.by \
     --renew-by-default \
     --rsa-key-size 4096 \
     -d license.by \
